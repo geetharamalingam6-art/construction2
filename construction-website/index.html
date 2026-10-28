@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Construction - Home | Building Your Dreams</title>
+    <meta name="description" content="Apex Construction delivers exceptional residential and commercial construction services with quality craftsmanship, reliability, and precision from foundation to finish.">
+    <meta name="keywords" content="construction company, residential construction, commercial renovation, home building, project management">
+    <link rel="canonical" href="https://www.apexconstruction.com/index.html">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">Apex Construction</div>
+            <div class="hamburger" aria-label="Toggle navigation menu" role="button" tabindex="0">&#9776;</div>
+            <nav aria-label="Main Navigation">
+                <ul>
+                    <li><a href="index.html" aria-label="Go to Home page">Home</a></li>
+                    <li><a href="about.html" aria-label="Go to About page">About</a></li>
+                    <li><a href="services.html" aria-label="Go to Services page">Services</a></li>
+                    <li><a href="contact.html" aria-label="Go to Contact page">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <section class="hero" aria-label="Hero Banner">
+            <div class="hero-content">
+                <h1>Building Your Dreams</h1>
+                <p>We deliver exceptional construction services with quality craftsmanship, reliability, and precision from foundation to finish.</p>
+            </div>
+        </section>
+
+        <!-- Our Services Section with c1.png, c2.png, c3.png -->
+        <section class="home-services" aria-label="Our Services">
+            <h2>Our Services</h2>
+            <div class="home-services-grid">
+                <div class="home-service-card">
+                    <img src="c1.png" alt="Residential Construction Service">
+                    <div class="card-content">
+                        <h3>Residential Construction</h3>
+                        <p>Custom home building, renovations, and architectural expansions built to your exact specifications.</p>
+                    </div>
+                </div>
+                <div class="home-service-card">
+                    <img src="c2.png" alt="Commercial Renovation Service">
+                    <div class="card-content">
+                        <h3>Commercial Renovation</h3>
+                        <p>Modern office build-outs and retail space upgrades designed for maximum efficiency and aesthetic appeal.</p>
+                    </div>
+                </div>
+                <div class="home-service-card">
+                    <img src="c3.png" alt="Project Management Service">
+                    <div class="card-content">
+                        <h3>Project Management</h3>
+                        <p>Comprehensive oversight ensuring on-time delivery, precise budgeting, and rigorous quality control.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Apex Construction. All rights reserved.</p>
+        <p class="footer-contact">Contact: info@apexconstruction.com | Phone: (555) 123-4567 | Follow us on Social Media</p>
+    </footer>
+
+    <!-- Chatbot Container & Toggle Button -->
+    <aside class="chatbot-container" id="chatbotContainer" aria-label="Chatbot Assistant">
+        <header class="chatbot-header">
+            <h3>Apex Assistant</h3>
+            <button class="chatbot-close" id="chatbotClose" aria-label="Close chatbot window">&times;</button>
+        </header>
+        <div class="chatbot-messages" role="log" aria-live="polite" aria-label="Chat messages history">
+            <!-- Initial message loaded dynamically or preset -->
+        </div>
+        <div class="chatbot-input-area">
+            <input type="text" placeholder="Type a message..." id="chatbotInput" aria-label="Type your message to chatbot">
+            <button id="chatbotSend" aria-label="Send chat message">Send</button>
+        </div>
+    </aside>
+    <button class="chatbot-toggle-btn" id="chatbotToggle" aria-label="Toggle chatbot assistant">&#128172;</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('nav ul');
+            if (hamburger && navMenu) {
+                hamburger.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                });
+            }
+
+            // Chatbot Setup & Gemini API Integration
+            const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY";
+            const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+            
+            let chatHistory = [];
+
+            const chatbotToggle = document.getElementById('chatbotToggle');
+            const chatbotContainer = document.getElementById('chatbotContainer');
+            const chatbotClose = document.getElementById('chatbotClose');
+            const chatbotInput = document.getElementById('chatbotInput');
+            const chatbotSend = document.getElementById('chatbotSend');
+            const chatbotMessages = document.querySelector('.chatbot-messages');
+
+            // Initial Welcome Message
+            const initialGreeting = "Hello! How can I help you with your construction project?";
+            const addMessage = (text, sender) => {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `message ${sender}-message`;
+                msgDiv.textContent = text;
+                chatbotMessages.appendChild(msgDiv);
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            };
+
+            // Initialize chat history and welcome message
+            chatHistory.push({ role: "model", parts: [{ text: initialGreeting }] });
+            addMessage(initialGreeting, 'ai');
+
+            if (chatbotToggle && chatbotContainer) {
+                chatbotToggle.addEventListener('click', () => {
+                    chatbotContainer.classList.toggle('active');
+                });
+            }
+
+            if (chatbotClose && chatbotContainer) {
+                chatbotClose.addEventListener('click', () => {
+                    chatbotContainer.classList.remove('active');
+                });
+            }
+
+            // Typing Indicator Function
+            const showTypingIndicator = () => {
+                const indicator = document.createElement('div');
+                indicator.className = 'typing-indicator';
+                indicator.id = 'typingIndicator';
+                indicator.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+                chatbotMessages.appendChild(indicator);
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            };
+
+            const removeTypingIndicator = () => {
+                const indicator = document.getElementById('typingIndicator');
+                if (indicator) {
+                    indicator.remove();
+                }
+            };
+
+            // Gemini API Chat Function
+            const callGeminiAPI = async (promptText) => {
+                chatHistory.push({ role: "user", parts: [{ text: promptText }] });
+                
+                const payload = {
+                    contents: chatHistory
+                };
+
+                try {
+                    const response = await fetch(GEMINI_API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('API request failed');
+                    }
+
+                    const data = await response.json();
+                    const aiResponseText = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm sorry, I couldn't process that request.";
+                    
+                    chatHistory.push({ role: "model", parts: [{ text: aiResponseText }] });
+                    return aiResponseText;
+                } catch (error) {
+                    console.error('Gemini API Error:', error);
+                    const fallback = "Thanks for your message! Our construction experts will assist you shortly.";
+                    chatHistory.push({ role: "model", parts: [{ text: fallback }] });
+                    return fallback;
+                }
+            };
+
+            // Send Logic
+            const handleSendMessage = async () => {
+                const text = chatbotInput.value.trim();
+                if (!text) return;
+
+                addMessage(text, 'user');
+                chatbotInput.value = '';
+                
+                showTypingIndicator();
+                const aiResponse = await callGeminiAPI(text);
+                removeTypingIndicator();
+
+                addMessage(aiResponse, 'ai');
+            };
+
+            if (chatbotSend && chatbotInput) {
+                chatbotSend.addEventListener('click', handleSendMessage);
+                chatbotInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        handleSendMessage();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

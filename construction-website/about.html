@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Construction - About Us | Our Story</title>
+    <meta name="description" content="Discover Apex Construction's story, mission, and commitment to quality craftsmanship, transparency, and reliability in residential and commercial construction.">
+    <meta name="keywords" content="about apex construction, company story, construction mission, builders and designers">
+    <link rel="canonical" href="https://www.apexconstruction.com/about.html">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">Apex Construction</div>
+            <div class="hamburger" aria-label="Toggle navigation menu" role="button" tabindex="0">&#9776;</div>
+            <nav aria-label="Main Navigation">
+                <ul>
+                    <li><a href="index.html" aria-label="Go to Home page">Home</a></li>
+                    <li><a href="about.html" aria-label="Go to About page">About</a></li>
+                    <li><a href="services.html" aria-label="Go to Services page">Services</a></li>
+                    <li><a href="contact.html" aria-label="Go to Contact page">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <section class="about-section">
+            <div class="about-container">
+                <div class="about-text">
+                    <h1>Our Story</h1>
+                    <p>Apex Construction was founded with a clear mission — to bring transparency, quality, and reliability into the construction industry. What began as a small team of dedicated engineers and designers has grown into a trusted partner for residential and commercial projects, delivering structured planning, transparent pricing, and strict quality control at every stage.</p>
+                    <p>Over the years, we have successfully completed hundreds of projects, introduced advanced 3D design and VR walkthrough experiences, and built long-lasting relationships based on trust and performance. At Apex, we don’t just construct buildings — we create strong foundations for dreams, businesses, and future generations.</p>
+                </div>
+                <div class="about-image">
+                    <img src="about.avif" alt="Modern construction building design and architecture">
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2026 Apex Construction. All rights reserved.</p>
+        <p class="footer-contact">Contact: info@apexconstruction.com | Phone: (555) 123-4567 | Follow us on Social Media</p>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('nav ul');
+            if (hamburger && navMenu) {
+                hamburger.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
