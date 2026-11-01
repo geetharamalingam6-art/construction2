@@ -1,0 +1,19 @@
+{
+  "name": "construction-website",
+  "version": "1.0.0",
+  "description": "Apex Construction Website with AI Chatbot and Gemini Content Generation",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve",
+    "dev": "npx serve"
+  },
+  "keywords": [
+    "construction",
+    "website",
+    "html",
+    "css",
+    "javascript"
+  ],
+  "author": "Apex Construction",
+  "license": "ISC"
+}

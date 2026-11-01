@@ -149,6 +149,33 @@
                 }
             };
 
+            // Smart Fallback & Contextual Response Generator
+            const getSmartFallbackResponse = (query) => {
+                const text = query.toLowerCase();
+                let response = "Thanks for reaching out to Apex Construction! How can we assist you with your building or remodeling project today?";
+
+                if (text.includes('hello') || text.includes('hi') || text.includes('hey') || text.includes('greetings')) {
+                    response = "Hello! Welcome to Apex Construction. How can I help you with your residential or commercial project today?";
+                } else if (text.includes('service') || text.includes('offer') || text.includes('do you do') || text.includes('what do')) {
+                    response = "Apex Construction offers comprehensive services including Residential Construction (custom homes & additions), Commercial Renovation (office build-outs & retail upgrades), and Professional Project Management. Visit our Services page for more details!";
+                } else if (text.includes('price') || text.includes('cost') || text.includes('rate') || text.includes('estimate') || text.includes('quote')) {
+                    response = "Project costs vary depending on scope, materials, and design requirements. We offer free initial consultations and estimates! You can reach out via our Contact page or call us to discuss your project specifics.";
+                } else if (text.includes('contact') || text.includes('phone') || text.includes('email') || text.includes('address') || text.includes('location') || text.includes('call')) {
+                    response = "You can contact Apex Construction by visiting our Contact page, emailing us at info@apexconstruction.com, or calling us at (555) 123-4567. We'd love to hear from you!";
+                } else if (text.includes('about') || text.includes('company') || text.includes('who') || text.includes('experience')) {
+                    response = "Apex Construction is a premier construction firm dedicated to exceptional craftsmanship, innovative design, and client satisfaction on every residential and commercial project.";
+                } else if (text.includes('residential') || text.includes('home') || text.includes('house') || text.includes('kitchen') || text.includes('bathroom')) {
+                    response = "Our residential services include custom home building, home additions, and complete architectural transformations tailored to your lifestyle and vision.";
+                } else if (text.includes('commercial') || text.includes('office') || text.includes('retail') || text.includes('business')) {
+                    response = "Our commercial services cover modern office build-outs, retail space upgrades, and commercial remodeling designed for maximum efficiency and aesthetic appeal.";
+                } else {
+                    response = `That's a great question about "${query}". Apex Construction specializes in high-quality residential and commercial projects. For specific inquiries, please visit our Contact page or speak directly with our team at (555) 123-4567!`;
+                }
+
+                chatHistory.push({ role: "model", parts: [{ text: response }] });
+                return response;
+            };
+
             // Gemini API Chat Function
             const callGeminiAPI = async (promptText) => {
                 chatHistory.push({ role: "user", parts: [{ text: promptText }] });
@@ -156,6 +183,10 @@
                 const payload = {
                     contents: chatHistory
                 };
+
+                if (GEMINI_API_KEY === "YOUR_GEMINI_API_KEY" || !GEMINI_API_KEY) {
+                    return getSmartFallbackResponse(promptText);
+                }
 
                 try {
                     const response = await fetch(GEMINI_API_URL, {
@@ -177,9 +208,7 @@
                     return aiResponseText;
                 } catch (error) {
                     console.error('Gemini API Error:', error);
-                    const fallback = "Thanks for your message! Our construction experts will assist you shortly.";
-                    chatHistory.push({ role: "model", parts: [{ text: fallback }] });
-                    return fallback;
+                    return getSmartFallbackResponse(promptText);
                 }
             };
 
